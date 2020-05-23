@@ -30,10 +30,19 @@ namespace S7NetPlus
                 try
                 {
                     XPlc myPLC = new XPlc(plc);
+
+                    myPLC.Close();
                     myPLC.Open();
 
-                    myPLC.SetDataBlockAndStartByteAdr(42, 10);
-                    myPLC.WriteValue(21.60, PlcDataType.DWord);
+                    //Test testing = plc.ReadClass<Test>(42, 0);
+                    Test testing = new Test();
+                    //plc.ReadClass(testing, 1);
+                    //System.Net.ServicePointManager.Expect100Continue = false;
+                    //var testw = plc.ReadAsync("DB42.DBW36").GetAwaiter().GetResult();
+
+                    //short result = ((ushort)testw).ConvertToShort();
+
+                    //short result = ((ushort) await plc.ReadAsync("DB42.DBW36")).ConvertToShort();
 
                     if (!myPLC.IsAvailable())
                     {
@@ -48,6 +57,9 @@ namespace S7NetPlus
                         Console.ReadLine();
                         return;
                     }
+
+                    myPLC.Close();
+                    //myPLC.Open();
                     Console.WriteLine("Connected");
                     //plc.Close();
                     //DB42.DBD10
@@ -92,7 +104,7 @@ namespace S7NetPlus
                     Console.ReadLine();
 
                     //object objTesting = plc.ReadClass<object>(23, 0);
-                    //Test testing = plc.ReadClass<Test>(23, 0);
+                    //Test testing = plc.ReadClass<Test>(42, 0);
                     //Test testin1 = myPLC.ReadClass<Test>(23, 0);
 
                     plc.Close();

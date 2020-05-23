@@ -152,22 +152,38 @@ namespace S7NetPlus
         #region Reading Operations
         public bool ReadBool(string variable)
         {
-            return (bool)PLC.Read(variable);
+            PLC.Open();
+            bool value = (bool)(PLC.Read(variable));
+            PLC.Close();
+            return value;
         }
         public bool ReadBool(DataType dataType, int db, int startByteAdr)
         {
-            return Convert.ToBoolean(PLC.ReadBytes(dataType, db, startByteAdr, 1)[0]);
+            PLC.Open();
+            bool value = Convert.ToBoolean(PLC.ReadBytes(dataType, db, startByteAdr, 1)[0]);
+            PLC.Close();
+            return value;
         }
 
         [Obsolete]
         public double ReadDouble(string variable, int decimalNumbers)
         {
-            return Math.Round(((uint)PLC.Read(variable)).ConvertToDouble(), decimalNumbers);
+            PLC.Open();
+            double value = Math.Round(Convert.ToDouble((uint)PLC.Read(variable)), decimalNumbers);
+            PLC.Close();
+            return value;
         }
         public int ReadInt(string variable)
         {
             //int test = Int.FromByteArray((byte[])PLC.Read(variable));
-            return (ushort)PLC.Read(variable);
+            PLC.Open();
+            var value = PLC.Read(variable);
+            PLC.Close();
+            if (Convert.ToInt32(value) == 0)
+            {
+                return 0;
+            }
+            return (ushort)value;
         }
 
         public int ReadBytes(DataType dataType, int db, int startByteAdr, int count)
